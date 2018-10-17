@@ -7,7 +7,7 @@ def question01(portfolios):
   # modify and then return the variable below
   answer = 0
   for i in range(len(portfolios)):
-    for j in range(len(portfolios)):
+    for j in range(i+1, len(portfolios)):
       # exclusive or
       answer = max(answer, portfolios[i] ^ portfolios[j])
   
