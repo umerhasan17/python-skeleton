@@ -1,61 +1,25 @@
 # ONLY EDIT FUNCTIONS MARKED CLEARLY FOR EDITING
 
 import numpy as np
-
-# def question06(numServers, targetServer, times):
-#   # modify and then return the variable below
-
-#   # times is the unvisited set and contains all edge weights
-
-#   # filling distances array with pseudo infinite values
-#   distances = [0]
-#   for i in range(numServers):
-#     distances.append(2 << 20)
-  
-#   for i in times:
-#     for j in times[i]:
-#       if (times[i][j] < distances[j]):
-#         distances[j] = times[i][j]
-#     times.remove(i)
-
-#   # might be +/- 1 
-#   answer = distances[targetServer]
-#   print (distances)
-#   print (answer)
-#   return answer
+import itertools
 
 def question06(numServers, targetServer, times):
+  # modify and then return the variable below
   answer = -1
-  
-  unvisited = [i for i in range(numServers)]
-  infinity  = 10000
-  graph     = times
-  djikstra  = [infinity for _ in range(numServers)]
-  djikstra[0] = graph[0][0]
-  visited = [0]
+  shortest_distance = times[0]
+  unvisitedNodes = times[1:]
+  targetIndex = targetServer - 1
+  print (unvisitedNodes)
+  print (shortest_distance)
 
-  for node in unvisited:
-    if node not in visited:
-      djikstra[node] = min(djikstra[node], djikstra[0] + graph[0][node])
-    
-  while len(visited) < numServers:
-    nextNode = findNextNode(djikstra, visited, infinity)
-    visited.append(nextNode)
-    for node in unvisited:
-      if node not in visited:
-        djikstra[node] =  min (djikstra[node], djikstra[nextNode] + graph[nextNode][node])
+  while len(unvisitedNodes) != 0:
+      for i in range(len(unvisitedNodes)):
+          if unvisitedNodes[i][targetIndex] + shortest_distance[i+1] < shortest_distance[targetIndex]:
+              shortest_distance[targetIndex] = unvisitedNodes[i][targetIndex] + shortest_distance[i+1]
+      unvisitedNodes = np.delete(unvisitedNodes, (i), axis = 0)
+      print(shortest_distance)
+     
 
-  print (visited)
-  print (answer)
-  answer = djikstra[targetServer]
+  return answer
 
-def findNextNode(djikstra, visited, infinity):
-  nextNode = djikstra.index(min(djikstra))
-  if nextNode not in visited:
-    return nextNode
-  djikstraTmp = djikstra[:]
-  djikstraTmp[nextNode] = infinity
-
-  return findNextNode(djikstraTmp, visited, infinity)
-
-question06(3, 2, [[1, 2, 3] , [1, 2, 3], [3, 4, 5]])
+question06(3,1,[[0,7,4],[7,0,2],[4,2,0]])
